@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Art galaxy</title>
+  <style>
+    body{
+      font-family:Arial;
+      text-align:center;
+      background:#00BFFF;
+    }
+    h2{color:#F08080;}
+
+    .form input{
+      padding:8px;
+      margin:5px;
+      border-radius:5px;
+      border:none;
+    }
+
+    .mode button{
+      margin:5px;
+      padding:8px 15px;
+      border:none;
+      border-radius:5px;
+      cursor:pointer;
+    }
+
+    .board{
+      display:grid;
+      grid-template-columns:repeat(3,100px);
+      gap:10px;
+      justify-content:center;
+      margin:20px auto;
+    }
+    .cell{
+      width:100px;
+      height:100px;
+      background:#FFFACD;
+      font-size:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      border-radius:10px;
+    }
+    .X{color:#ff5252;}
+    .O{color:#4caf50;}
+
+    button.main{
+      padding:10px 20px;
+      background:#939597;
+      border:none;
+      border-radius:5px;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1><marquee direction="right"scrollamount="13"bgcolor="#87cefa">  Welocome to Art galaxy game</marquee></h1>
+<ul type="disc">
+<li><b><big><marquee direction="right"scrollamount="3"bgcolor="#ffefd5"> INTRODUCTION</marquee></big></b></li>
+<ul type="circle" text align="left">
+<li>Tic Tac Toe is a popular two-player logic-based game.</li>
+<li>In this project, I have developed a digital version of the Tic Tac Toe game.</li>
+<li>The game provides two playing options:</li>
+Player vs Player
+Player vs Computer
+<li>Users can enter their names, and the game runs smoothly in a web browser.</i></li></ul>
+<li><b> <big><marquee direction="right"scrollamount="3"bgcolor="#ffefd5">TECHNOLOGIES USED</marquee></big></b></li>
+<ol type="1" text align="left">
+<li> <b>HTML (Structure)</b></li>
+HTML is used to create the basic skeleton of the game.
+<li><b>CSS (Design)</b></li>
+CSS is used to make the game colorful, attractive, and visually appealing.
+<li><b> JavaScript (Logic)</b></li>
+JavaScript acts as the brain of the game and handles:</ol>
+<ol type="I" text align="left">
+<li>Turn changing</li>
+<li>Win checking</li>
+<li>Computer moves</li>
+<li>Game restart</li></p>
+<!-- FORM -->
+<div class="form">
+  <input type="text" id="p1" placeholder="Player 1 Name">
+  <input type="text" id="p2" placeholder="Player 2 / Computer">
+  <br><br>
+  <button onclick="saveNames()">Save Names</button>
+</div>
+
+<br>
+
+<!-- MODE -->
+<div class="mode">
+  <button onclick="setMode('pvp')">Player vs Player</button>
+  <button onclick="setMode('pvc')">Player vs Computer</button>
+</div>
+
+<p id="status">Enter names & select mode</p>
+
+<!-- BOARD -->
+<div class="board">
+  <div class="cell" onclick="move(0)"></div>
+  <div class="cell" onclick="move(1)"></div>
+  <div class="cell" onclick="move(2)"></div>
+  <div class="cell" onclick="move(3)"></div>
+  <div class="cell" onclick="move(4)"></div>
+  <div class="cell" onclick="move(5)"></div>
+  <div class="cell" onclick="move(6)"></div>
+  <div class="cell" onclick="move(7)"></div>
+  <div class="cell" onclick="move(8)"></div>
+</div>
+
+
+<button class="main" onclick="resetGame()">Restart</button><br><br>
+<ul type="square" textalign="left">
+<li><b><marquee direction="right"scrollamount="3"bgcolor="#ffefd5"> FEATURES</marquee></b>
+</li>
+
+
+<ol type ="I" textalign="left">
+<li>User-friendly interface
+
+</li>
+<li>Player vs Player mode
+</li>
+<li>Player vs Computer mode
+</li>
+<li>Dynamic game messages</li>
+
+<li>Restart option
+
+</li>
+<li>Beginner-friendly project
+
+</li></ol>
+<li><b> FUTURE SCOPE
+Smart AI
+Scoreboard system
+Sound effects
+Mobile responsiveness</b></li>
+
+<li> <b><big><marquee direction="right"scrollamount="3"bgcolor="#ffefd5"> CONCLUSION</marquee></big></b>
+</li>
+This project helped me understand the integration of HTML, CSS, and JavaScript, as well as logic building and DOM manipulation.
+It is a simple and effective web-based game project, especially suitable for beginners.
+<br>
+<h3><marquee direction="left"scrollamount="8"bgcolor="#ffefd5"> Thanku to play our game</marquee></h3>
+
+<script>
+  let board=["","","","","","","","",""];
+  let current="X";
+  let mode="";
+  let gameOver=false;
+
+  let player1="Player X";
+  let player2="Player O";
+
+  const wins=[
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+
+  function saveNames(){
+    player1=document.getElementById("p1").value || "Player X";
+    player2=document.getElementById("p2").value || "Player O";
+    alert("Names Saved ");
+  }
+
+  function setMode(m){
+    mode=m;
+    resetGame();
+    document.getElementById("status").innerText =
+      m=="pvp" ? player1+" Turn (X)" : player1+" Turn (X)";
+  }
+
+  function move(i){
+    if(!mode || board[i] || gameOver) return;
+
+    board[i]=current;
+    update();
+
+    if(check(current)){
+      document.getElementById("status").innerText =
+        (current=="X"?player1:player2)+" congratulations you wins this  game";
+      gameOver=true;
+      return;
+    }
+
+    if(board.every(c=>c)){
+      document.getElementById("status").innerText="Draw ??";
+      gameOver=true;
+      return;
+    }
+
+    if(mode=="pvp"){
+      current=current=="X"?"O":"X";
+      document.getElementById("status").innerText =
+        (current=="X"?player1:player2)+" Turn ("+current+")";
+    }else{
+      computerMove();
+    }
+  }
+
+  function computerMove(){
+    let empty=board.map((v,i)=>v==""?i:null).filter(v=>v!==null);
+    let i=empty[Math.floor(Math.random()*empty.length)];
+    board[i]="O";
+    update();
+
+    if(check("O")){
+      document.getElementById("status").innerText =
+        "Computer Wins ??";
+      gameOver=true;
+      return;
+    }
+    current="X";
+    document.getElementById("status").innerText =
+      player1+" Turn (X)";
+  }
+
+  function check(p){
+    return wins.some(w=>w.every(i=>board[i]==p));
+  }
+
+  function update(){
+    document.querySelectorAll(".cell").forEach((c,i)=>{
+      c.innerText=board[i];
+      c.className="cell "+board[i];
+    });
+  }
+
+  function resetGame(){
+    board=["","","","","","","","",""];
+    current="X";
+    gameOver=false;
+    update();
+  }
+</script>
+
+</body>
+</html>
